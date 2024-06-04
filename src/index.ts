@@ -1,11 +1,10 @@
-import type MarkdownIt from 'markdown-it'
 import type Token from 'markdown-it/lib/token.mjs'
 import type Renderer from 'markdown-it/lib/renderer.mjs'
 import * as mermaidFunctions from './mermaid-parser'
 import * as platumlFunctions from './plantuml-parser'
 import type { PlantumlOptions } from './types'
 
-export default function umlPlugin(md: MarkdownIt, options: PlantumlOptions = {}) {
+export default function umlPlugin(md: any, options: PlantumlOptions = {}) {
   platumlFunctions.default.functions.initialize(options)
   mermaidFunctions.default.functions.initialize(options)
 

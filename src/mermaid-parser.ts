@@ -1,7 +1,7 @@
 'use strict'
 
 import { getController } from './render-control'
-import type { MermaidOptions } from '.'
+import type { MermaidOptions } from './types'
 
 const functions = {
   options: {

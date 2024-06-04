@@ -1,16 +1,15 @@
-import type Token from 'markdown-it/lib/token.mjs'
-import type Renderer from 'markdown-it/lib/renderer.mjs'
+import type { PluginWithOptions } from 'markdown-it'
 import * as mermaidFunctions from './mermaid-parser'
 import * as platumlFunctions from './plantuml-parser'
 import type { PlantumlOptions } from './types'
 
-export default function umlPlugin(md: any, options: PlantumlOptions = {}) {
+const MarkdownItDiagrams: PluginWithOptions<PlantumlOptions> = (md, options = {}) => {
   platumlFunctions.default.functions.initialize(options)
   mermaidFunctions.default.functions.initialize(options)
 
   const defaultRenderer = md.renderer.rules.fence!.bind(md.renderer.rules)
 
-  md.renderer.rules.fence = (tokens: Token[], idx: number, options: any, env: any, slf: Renderer) => {
+  md.renderer.rules.fence = (tokens, idx, options, env, slf) => {
     const token = tokens[idx]
     const code = token.content.trim()
     const info = token.info ? md.utils.unescapeAll(token.info).trim() : ''
@@ -30,3 +29,5 @@ export default function umlPlugin(md: any, options: PlantumlOptions = {}) {
     return defaultRenderer(tokens, idx, options, env, slf)
   }
 }
+
+export default MarkdownItDiagrams

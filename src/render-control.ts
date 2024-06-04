@@ -1,4 +1,4 @@
-import type { Framework } from './types'
+import type { Framework } from './index.d'
 
 /**
  * Render controller for other frameworks

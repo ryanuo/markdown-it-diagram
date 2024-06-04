@@ -1,9 +1,9 @@
 // Process block-level uml diagrams
 //
 'use strict'
+import type { PlantumlOptions } from './index.d'
 import deflate from './deflate'
 import { getController } from './render-control'
-import type { PlantumlOptions } from './types'
 
 const functions = {
   options: {

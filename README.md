@@ -6,6 +6,8 @@
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
 
+markdown-it-diagram is a markdown-it plugin for diagram. It supports mermaid, plantuml. It supports contorls like zoom, move.
+
 ## License
 
 [MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/rr210)

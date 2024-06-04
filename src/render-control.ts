@@ -9,10 +9,10 @@ function renderOtherController(content: string) {
   return `
   <div class="details-controller">
   <button class="btn dialog" aria-label="Show details">
+    ${content}
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="octicon">
       <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path>
     </svg>
-    ${content}
   </button>
   <button class="btn copy" aria-label="Copy to clipboard">
     <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon octicon-copy js-clipboard-copy-icon">
@@ -304,18 +304,6 @@ export function getController(
     </div>
     <${tag_map[framework]} is="script">
     var render_ = function(){
-      function insertAtBodyStart(targetsName) {
-        const body = document.body;
-        const existingElement = document.querySelector(targetsName);
-    
-        if (!existingElement) {
-            const newElement = document.createElement('div');
-            newElement.id = targetsName.replace(/#/, '');;
-            body.insertBefore(newElement, body.firstChild);
-        }
-      }
-      insertAtBodyStart('#diagram-dialog-container');
-      
       const containers = document.querySelectorAll('.controller-panel-container');
       containers.forEach(function(container) {
         const diagram = container.querySelector('${selector}');

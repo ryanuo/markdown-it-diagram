@@ -1,5 +1,5 @@
-import type MarkdownIt from 'markdown-it/index.js'
 import type { Renderer, Token } from 'markdown-it/index.js'
+import type MarkdownIt from 'markdown-it'
 import * as mermaidFunctions from './mermaid-parser'
 import * as platumlFunctions from './plantuml-parser'
 import type { PlantumlOptions } from './types'

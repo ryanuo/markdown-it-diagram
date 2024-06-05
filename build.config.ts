@@ -4,7 +4,7 @@ export default defineBuildConfig({
   entries: [
     'src/index',
     {
-      builder: 'mkdist',
+      builder: 'rollup',
       input: './src/dom',
       outDir: './dist/dom',
     },

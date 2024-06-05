@@ -1,4 +1,4 @@
-import { type ActionMap, type PanDirection, SelectorEnum } from '../types'
+import { type ActionMap, type PanDirection, SelectorEnum } from './types'
 import './style.css'
 
 const MarkdownItDiagramDomScript: () => void = function () {

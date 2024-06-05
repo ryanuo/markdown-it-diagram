@@ -1,4 +1,5 @@
-import { MarkdownItDiagramDomScript } from './dom'
+import * as dom from './dom/types'
+import { SelectorEnum } from './dom/types'
 
 export interface BaseOptions {
   /**
@@ -23,14 +24,4 @@ export interface MermaidOptions extends BaseOptions {
   [key: string]: any
 }
 
-export type PanDirection = 'up' | 'down' | 'left' | 'right'
-
-export interface ActionMap {
-  [key: string]: () => void
-}
-
-export enum SelectorEnum {
-  IMG = 'diagram-m',
-}
-
-export { MarkdownItDiagramDomScript }
+export { dom, SelectorEnum }

@@ -4,9 +4,16 @@ export default defineBuildConfig({
   entries: [
     'src/index',
     {
-      builder: 'rollup',
+      builder: 'mkdist',
       input: './src/dom',
       outDir: './dist/dom',
+      format: 'cjs',
+    },
+    {
+      builder: 'mkdist',
+      input: './src/dom',
+      outDir: './dist/dom',
+      format: 'esm',
     },
   ],
   declaration: true,

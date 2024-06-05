@@ -1,3 +1,5 @@
+import { MarkdownItDiagramDomScript } from './dom'
+
 export interface BaseOptions {
   /**
    * if use controller
@@ -30,3 +32,5 @@ export interface ActionMap {
 export enum SelectorEnum {
   IMG = 'diagram-m',
 }
+
+export { MarkdownItDiagramDomScript }

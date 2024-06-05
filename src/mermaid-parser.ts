@@ -1,12 +1,11 @@
 'use strict'
 
 import { getController } from './render-control'
-import type { MermaidOptions } from './types'
+import { type MermaidOptions, SelectorEnum } from './types'
 
 const functions = {
   options: {
     isController: true,
-    framework: 'vue',
   } as MermaidOptions,
 
   initialize(options: MermaidOptions): void {
@@ -16,10 +15,10 @@ const functions = {
 
   getMarkup(code: string): string {
     const content = removeTripleBackticks(code)
-    const img = `<pre class="mermaid">\n${content}\n</pre>\n`
+    const img = `<pre class="mermaid ${SelectorEnum.IMG}">\n${content}\n</pre>\n`
     if (!this.options.isController)
       return img
-    return getController(code, img, '.mermaid', 'vue')
+    return getController(code, img)
   },
 }
 

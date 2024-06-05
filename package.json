@@ -45,7 +45,8 @@
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "less": "lessc src/dom/style.less src/dom/style.css"
   },
   "peerDependencies": {
     "@types/markdown-it": "*",

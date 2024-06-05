@@ -1,7 +1,7 @@
 // Process block-level uml diagrams
 //
 'use strict'
-import type { PlantumlOptions } from './types'
+import { type PlantumlOptions, SelectorEnum } from './types'
 import deflate from './deflate'
 import { getController } from './render-control'
 
@@ -18,11 +18,11 @@ const functions = {
 
   getMarkup(code: string, diagramName: string): string {
     const srcVal = this.generateSource(code, diagramName, this.options)
-    const img = `<img class="diagram-m" src="${srcVal}" alt="uml diagram">`
+    const img = `<img class="${SelectorEnum.IMG}" src="${srcVal}" alt="uml diagram">`
     if (!this.options.isController)
       return img
 
-    return getController(code, img, '.diagram-m', this.options.framework ?? 'vue')
+    return getController(code, img)
   },
 
   generateSource(umlCode: string, diagramMarker: string, pluginOptions: PlantumlOptions): string {

@@ -1,14 +1,8 @@
-export type Framework = 'vue' | 'react'
-
 export interface BaseOptions {
   /**
    * if use controller
    */
   isController?: boolean
-  /**
-   * framework name
-   */
-  framework?: Framework
 }
 
 export interface PlantumlOptions extends BaseOptions {
@@ -25,4 +19,14 @@ export interface PlantumlOptions extends BaseOptions {
 
 export interface MermaidOptions extends BaseOptions {
   [key: string]: any
+}
+
+export type PanDirection = 'up' | 'down' | 'left' | 'right'
+
+export interface ActionMap {
+  [key: string]: () => void
+}
+
+export enum SelectorEnum {
+  IMG = 'diagram-m',
 }

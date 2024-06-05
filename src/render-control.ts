@@ -1,14 +1,12 @@
-import type { Framework } from './types'
-
 /**
  * Render controller for other frameworks
  * @param content
  * @returns string
  */
-function renderOtherController(content: string) {
+function renderOtherController(code: string, content: string) {
   return `
   <div class="details-controller">
-  <button class="btn dialog" aria-label="Show details">
+  <button class="btn dialog" aria-label="Show details" data-clipboard-code="${code}">
     ${content}
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="octicon">
       <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path>
@@ -147,152 +145,13 @@ const controller = `<div class="viewer-control-panel">
 export function getController(
   code: string,
   img: string,
-  selector: string,
-  framework: Framework,
 ) {
-  const tag_map = {
-    vue: 'component',
-    react: 'script',
-  }
-
   return `
-    <style>
-      :root {
-        --color-btn-text: #24292f;
-        --color-btn-bg: #f6f8fa;
-        --color-btn-border: rgba(27,31,36,0.15);
-        --color-btn-shadow: 0 1px 0 rgba(27,31,36,0.04);
-        --color-btn-inset-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
-        --color-btn-hover-bg: #f3f4f6;
-        --color-btn-hover-border: rgba(27,31,36,0.15);
-        --color-btn-focus-border: rgba(27,31,36,0.15);
-        --color-btn-focus-shadow: 0 0 0 2px #abadaf4d;
-      }
-      #diagram-dialog-container{
-        position: fixed;
-        top: 30%;
-        left: calc(50% - 30vw);
-        margin: 0 auto;
-        z-index: 100;
-        width: 60vw;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--color-btn-bg);
-        display: none;
-      }
-      .controller-panel-container {
-        z-index: 20;
-        position: relative;
-        overflow: hidden;
-      }
-      .controller-panel-container .fg-none{
-        display: none;
-      }
-      .fg-show{
-         display: flex !important;
-      }
-      .controller-panel-container .color-fg-success{
-        color: #1a7f37;
-      }
-      .controller-panel-container .dialog-container{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 100;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .viewer-control-panel {
-        position: absolute;
-        bottom: 1em;
-        right: 1em;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 0.2em;
-      }
-      .details-controller{
-        position: absolute;
-        top: 1em;
-        right: 1em;
-        display: flex;
-        gap: 0.2em;
-      }
-      .viewer-control-panel .btn,
-      .details-controller .btn {
-        color: var(--color-btn-text);
-        background-color: var(--color-btn-bg);
-        box-shadow: var(--color-btn-shadow), var(--color-btn-inset-shadow);
-        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-        transition-property: color, background-color, border-color;        
-        position: relative;
-        display: inline-block;
-        padding: 5px 7px;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        user-select: none;
-        border: 1px solid;
-        border-color: var(--color-btn-border);
-        border-radius: 6px;
-        appearance: none;
-       }
-       .viewer-control-panel .btn:hover,
-       .details-controller .btn:hover {
-        background-color: var(--color-btn-hover-bg);
-        border-color: var(--color-btn-hover-border);
-        transition-duration: 0.1s;
-       }
-       .viewer-control-panel .btn:focus {
-        border-color: var(--color-btn-focus-border);
-        outline: none;
-        box-shadow: var(--color-btn-focus-shadow);
-       }
-       .details-controller .btn:focus{
-        outline: none;
-       }
-      .viewer-control-panel button {
-        padding: 5px 7px;
-      }
-      .viewer-control-panel .zoom-in {
-        grid-column: 3;
-        grid-row: 1;
-      }
-      .viewer-control-panel .zoom-out {
-        grid-column: 3;
-        grid-row: 3;
-      }
-      .viewer-control-panel .reset {
-        grid-column: 2;
-        grid-row: 2;
-      }
-      .viewer-control-panel .up {
-        grid-column: 2;
-        grid-row: 1;
-      }
-      .viewer-control-panel .down {
-        grid-column: 2;
-        grid-row: 3;
-      }
-      .viewer-control-panel .left {
-        grid-column: 1;
-        grid-row: 2;
-      }
-      .viewer-control-panel .right {
-        grid-column: 3;
-        grid-row: 2;
-      } 
-    </style>
     <div class="controller-panel-container">
     ${img}
     ${controller}
     ${renderOtherController(
+      code,
       `<div class="dialog__item fg-none">
         <div class="controller-panel-container">
           ${img}
@@ -302,138 +161,5 @@ export function getController(
       `,
     )}
     </div>
-    <${tag_map[framework]} is="script">
-    var render_ = function(){
-      const containers = document.querySelectorAll('.controller-panel-container');
-      containers.forEach(function(container) {
-        const diagram = container.querySelector('${selector}');
-  
-        if (!diagram) {
-          console.warn('Cannot find diagram within container');
-          return;
-        }
-  
-        let scale = 1;
-
-        function zoomIn() {
-          scale *= 1.2;
-          applyScale();
-        }
-        
-        function zoomOut() {
-          scale /= 1.2;
-          if (scale < 0.1) scale = 0.1;
-          applyScale();
-        }
-        
-        function resetView() {
-          scale = 1;
-          diagram.style.transform = 'translate(0px, 0px) scale(1)';
-        }
-        
-        function applyScale() {
-          const currentTransform = diagram.style.transform || 'translate(0px, 0px) scale(1)';
-          let [translateStr] = currentTransform.split(' scale');
-          diagram.style.transform = translateStr +' scale(' + scale + ')';
-        }
-
-        resetView();
-  
-        function panDiagram(direction) {
-          const currentTransform = diagram.style.transform || 'translate(0px, 0px) scale(1)';
-          let [translateStr, scaleStr] = currentTransform.split(' scale');
-          translateStr = translateStr.trim();
-          scaleStr = scaleStr ? ' scale' + scaleStr.trim() + '' : '';
-        
-          var transformValues = translateStr.replace('translate(', '').replace(')', '').split(',');
-          var x = parseInt(transformValues[0].trim());
-          var y = parseInt(transformValues[1].trim());
-
-          switch (direction) {
-            case 'up':
-              y -= 20;
-              break;
-            case 'down':
-              y += 20;
-              break;
-            case 'left':
-              x -= 20;
-              break;
-            case 'right':
-              x += 20;
-              break;
-          }
-        
-          diagram.style.transform = 'translate(' + x + 'px, ' + y + 'px)' + scaleStr;
-        }
-        
-        async function copyToClipboard(text,btn) {
-          try {
-              if (navigator.clipboard && navigator.clipboard.writeText) {
-                  await navigator.clipboard.writeText(text);
-                  btn.querySelector('.octicon-copy').classList.add('fg-none');
-                  btn.querySelector('.octicon-check').classList.remove('fg-none');
-                  setTimeout(() => {
-                    btn.querySelector('.octicon-copy').classList.remove('fg-none');
-                    btn.querySelector('.octicon-check').classList.add('fg-none');
-                  }, 1000);
-              } else {
-                  console.log('The Current Environment Does Not Support Clipboard API');
-              }
-          } catch (err) {
-              console.error('Failed To Copy To Clipboard:', err);
-          }
-        }
-        function handleButtonClick(event) {
-          const button = event.target.closest('.btn');
-          if (!button) return;
-      
-          const actionMap = {
-              'zoom-in': zoomIn,
-              'zoom-out': zoomOut,
-              'reset': resetView,
-              'up': () => panDiagram('up'),
-              'down': () => panDiagram('down'),
-              'left': () => panDiagram('left'),
-              'right': () => panDiagram('right'),
-              'copy': () => copyToClipboard('${code}',button),
-              'dialog': () => {
-                console.log(event);
-              }
-          };
-      
-          const className = button.classList[1];
-          const action = actionMap[className];
-          if (typeof action === 'function') {
-              action();
-          }
-        }
-      
-        container.addEventListener('mouseenter', function() {
-          const controlPanel = container.querySelector('.viewer-control-panel');
-          const detailsPanel = container.querySelector('.details-controller');
-          if (controlPanel) {
-            controlPanel.addEventListener('click', handleButtonClick);
-          }
-          if (detailsPanel) {
-            detailsPanel.addEventListener('click', handleButtonClick);
-          }
-        });
-  
-        container.addEventListener('mouseleave', function() {
-          const controlPanel = container.querySelector('.viewer-control-panel');
-          const detailsPanel = container.querySelector('.details-controller');
-          if (controlPanel) {
-            controlPanel.removeEventListener('click', handleButtonClick);
-          }
-          if (detailsPanel) {
-            detailsPanel.removeEventListener('click', handleButtonClick);
-          }
-        });
-      });
-    };
-
-    render_();
-    </${tag_map[framework]}>
   `
 }

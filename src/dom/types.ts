@@ -6,4 +6,7 @@ export interface ActionMap {
 
 export enum SelectorEnum {
   IMG = 'diagram-m',
+  MODAL = 'dialog__m',
 }
+
+export type ContainterSelector = '[data-controll-panel-container-modal]' | '[data-controll-panel-container]'

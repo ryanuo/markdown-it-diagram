@@ -1,8 +1,50 @@
-import { type ActionMap, type PanDirection, SelectorEnum } from './types'
+import type { ActionMap, ContainterSelector, PanDirection } from './types'
+import { SelectorEnum } from './types'
+import './modal'
+
 import './style.css'
 
-const MarkdownItDiagramDomScript: () => void = function () {
-  const containers: NodeListOf<Element> = document.querySelectorAll('[data-controll-panel-container]')
+declare global {
+  interface HTMLElementTagNameMap {
+    'pp-modal': Modal
+  }
+}
+
+/**
+ *
+ * @param modalSelector
+ * @param content
+ * @returns
+ */
+export function setupModalHandler(modalSelector: string, content: string, runScript?: () => void) {
+  const modalElement = document.querySelector(modalSelector) as Modal
+  if (!modalElement) {
+    console.error(`Modal element not found for selector: ${modalSelector}`)
+    return
+  }
+
+  if (content) {
+    const modalBody = modalElement?.querySelector('.modal-body')
+    if (modalBody) {
+      modalBody.innerHTML = content
+    }
+  }
+
+  modalElement._showModal()
+
+  runScript?.()
+}
+
+/**
+ *
+ * @param selector [data-controll-panel-container-modal] | [data-controll-panel-container]
+ */
+const MarkdownItDiagramDomScript: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
+  const containers: NodeListOf<Element> = document.querySelectorAll(selector)
+
+  // setup modal handler
+  if (!document.getElementById(SelectorEnum.MODAL))
+    document.body.insertAdjacentHTML('beforeend', `<pp-modal title='1' id="${SelectorEnum.MODAL}"></pp-modal>`)
   containers.forEach((container: Element) => {
     const diagram: HTMLElement | null = container.querySelector(`.${SelectorEnum.IMG}`)
     if (!diagram) {
@@ -108,6 +150,7 @@ const MarkdownItDiagramDomScript: () => void = function () {
         'right': () => panDiagram('right'),
         'copy': () => copyToClipboard(button),
         'dialog': () => {
+          setupModalHandler(`#${SelectorEnum.MODAL}`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => MarkdownItDiagramDomScript('[data-controll-panel-container-modal]'))
           console.warn(event)
         },
       }

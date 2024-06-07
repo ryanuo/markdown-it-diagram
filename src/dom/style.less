@@ -23,7 +23,8 @@
   display: none;
 }
 
-div[data-controll-panel-container] {
+div[data-controll-panel-container],
+div[data-controll-panel-container-modal] {
   z-index: 20;
   position: relative;
   overflow: hidden;
@@ -34,6 +35,22 @@ div[data-controll-panel-container] {
 
   .fg-success {
     color: #1a7f37;
+  }
+
+  img[alt="uml diagram"] {
+    border: 1px dashed #000;
+    width: 40%;
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 6px;
+  }
+
+  .mermaid{
+    svg {
+      margin: 20px auto;
+    }
   }
 
   .dialog-container {

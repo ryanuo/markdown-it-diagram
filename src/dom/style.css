@@ -21,18 +21,36 @@
   background-color: var(--color-btn-bg);
   display: none;
 }
-div[data-controll-panel-container] {
+div[data-controll-panel-container],
+div[data-controll-panel-container-modal] {
   z-index: 20;
   position: relative;
   overflow: hidden;
 }
-div[data-controll-panel-container] .fg-none {
+div[data-controll-panel-container] .fg-none,
+div[data-controll-panel-container-modal] .fg-none {
   display: none;
 }
-div[data-controll-panel-container] .fg-success {
+div[data-controll-panel-container] .fg-success,
+div[data-controll-panel-container-modal] .fg-success {
   color: #1a7f37;
 }
-div[data-controll-panel-container] .dialog-container {
+div[data-controll-panel-container] img[alt="uml diagram"],
+div[data-controll-panel-container-modal] img[alt="uml diagram"] {
+  border: 1px dashed #000;
+  width: 40%;
+  max-width: 80%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 6px;
+}
+div[data-controll-panel-container] .mermaid svg,
+div[data-controll-panel-container-modal] .mermaid svg {
+  margin: 20px auto;
+}
+div[data-controll-panel-container] .dialog-container,
+div[data-controll-panel-container-modal] .dialog-container {
   position: fixed;
   top: 0;
   left: 0;

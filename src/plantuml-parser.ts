@@ -1,14 +1,12 @@
-// Process block-level uml diagrams
-//
 'use strict'
+
 import { type PlantumlOptions, SelectorEnum } from './types'
 import deflate from './deflate'
 import { getController } from './render-control'
 
 const functions = {
   options: {
-    isController: true,
-    framework: 'react',
+    showController: false,
   } as PlantumlOptions,
 
   initialize(options: PlantumlOptions): void {
@@ -19,7 +17,7 @@ const functions = {
   getMarkup(code: string, diagramName: string): string {
     const srcVal = this.generateSource(code, diagramName, this.options)
     const img = `<img class="${SelectorEnum.IMG}" src="${srcVal}" alt="uml diagram">`
-    if (!this.options.isController)
+    if (!this.options.showController)
       return img
 
     return getController(code, img)

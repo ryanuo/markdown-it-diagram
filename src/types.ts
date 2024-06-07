@@ -3,16 +3,16 @@ import { SelectorEnum } from './dom/types'
 
 export interface BaseOptions {
   /**
-   * if use controller
+   * if show controller
    */
-  isController?: boolean
+  showController?: boolean
 }
 
 export interface PlantumlOptions extends BaseOptions {
   /**
    * image format
    */
-  imageFormat?: string
+  imageFormat?: 'png' | 'svg' | 'txt'
   /**
    * server url
    */

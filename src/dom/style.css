@@ -21,18 +21,18 @@
   background-color: var(--color-btn-bg);
   display: none;
 }
-.controller-panel-container {
+div[data-controll-panel-container] {
   z-index: 20;
   position: relative;
   overflow: hidden;
 }
-.controller-panel-container .fg-none {
+div[data-controll-panel-container] .fg-none {
   display: none;
 }
-.controller-panel-container .color-fg-success {
+div[data-controll-panel-container] .fg-success {
   color: #1a7f37;
 }
-.controller-panel-container .dialog-container {
+div[data-controll-panel-container] .dialog-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -47,62 +47,7 @@
 .fg-show {
   display: flex !important;
 }
-.viewer-control-panel {
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.2em;
-}
-.viewer-control-panel .btn:focus {
-  border-color: var(--color-btn-focus-border);
-  outline: none;
-  box-shadow: var(--color-btn-focus-shadow);
-}
-.viewer-control-panel button {
-  padding: 5px 7px;
-}
-.viewer-control-panel .zoom-in {
-  grid-column: 3;
-  grid-row: 1;
-}
-.viewer-control-panel .zoom-out {
-  grid-column: 3;
-  grid-row: 3;
-}
-.viewer-control-panel .reset {
-  grid-column: 2;
-  grid-row: 2;
-}
-.viewer-control-panel .up {
-  grid-column: 2;
-  grid-row: 1;
-}
-.viewer-control-panel .down {
-  grid-column: 2;
-  grid-row: 3;
-}
-.viewer-control-panel .left {
-  grid-column: 1;
-  grid-row: 2;
-}
-.viewer-control-panel .right {
-  grid-column: 3;
-  grid-row: 2;
-}
-.details-controller {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  display: flex;
-  gap: 0.2em;
-}
-.details-controller .btn:focus {
-  outline: none;
-}
-.viewer-control-panel .btn,
-.details-controller .btn {
+div[data-control-panel] [data-control-btn] {
   color: var(--color-btn-text);
   background-color: var(--color-btn-bg);
   box-shadow: var(--color-btn-shadow), var(--color-btn-inset-shadow);
@@ -123,9 +68,59 @@
   border-radius: 6px;
   appearance: none;
 }
-.viewer-control-panel .btn:hover,
-.details-controller .btn:hover {
+div[data-control-panel] [data-control-btn]:focus {
+  border-color: var(--color-btn-focus-border);
+  outline: none;
+  box-shadow: var(--color-btn-focus-shadow);
+}
+div[data-control-panel] [data-control-btn]:hover {
   background-color: var(--color-btn-hover-bg);
   border-color: var(--color-btn-hover-border);
   transition-duration: 0.1s;
+}
+div[data-control-panel] button {
+  padding: 5px 7px;
+}
+div[data-control-panel] [data-control-btn="zoom-in"] {
+  grid-column: 3;
+  grid-row: 1;
+}
+div[data-control-panel] [data-control-btn="zoom-out"] {
+  grid-column: 3;
+  grid-row: 3;
+}
+div[data-control-panel] [data-control-btn="reset"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+div[data-control-panel] [data-control-btn="up"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+div[data-control-panel] [data-control-btn="down"] {
+  grid-column: 2;
+  grid-row: 3;
+}
+div[data-control-panel] [data-control-btn="left"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+div[data-control-panel] [data-control-btn="right"] {
+  grid-column: 3;
+  grid-row: 2;
+}
+div[data-control-panel="view"] {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.2em;
+}
+div[data-control-panel="details"] {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  display: flex;
+  gap: 0.2em;
 }

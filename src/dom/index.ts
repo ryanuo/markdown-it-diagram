@@ -2,7 +2,7 @@ import { type ActionMap, type PanDirection, SelectorEnum } from './types'
 import './style.css'
 
 const MarkdownItDiagramDomScript: () => void = function () {
-  const containers: NodeListOf<Element> = document.querySelectorAll('.controller-panel-container')
+  const containers: NodeListOf<Element> = document.querySelectorAll('[data-controll-panel-container]')
   containers.forEach((container: Element) => {
     const diagram: HTMLElement | null = container.querySelector(`.${SelectorEnum.IMG}`)
     if (!diagram) {
@@ -75,11 +75,13 @@ const MarkdownItDiagramDomScript: () => void = function () {
         const text: string = btn.getAttribute('data-clipboard-code') || ''
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(text)
-          btn.querySelector('.octicon-copy')?.classList.add('fg-none')
-          btn.querySelector('.octicon-check')?.classList.remove('fg-none')
+          const copyIcon = btn.querySelector('.octicon-copy')
+          const checkIcon = btn.querySelector('.octicon-check')
+          copyIcon?.classList.add('fg-none')
+          checkIcon?.classList.remove('fg-none')
           setTimeout(() => {
-            btn.querySelector('.octicon-copy')?.classList.remove('fg-none')
-            btn.querySelector('.octicon-check')?.classList.add('fg-none')
+            copyIcon?.classList.remove('fg-none')
+            checkIcon?.classList.add('fg-none')
           }, 1000)
         }
         else {
@@ -92,7 +94,7 @@ const MarkdownItDiagramDomScript: () => void = function () {
     }
 
     function handleButtonClick(event: Event): void {
-      const button: HTMLElement | null = event.target ? (event.target as HTMLElement).closest('.btn') : null
+      const button: HTMLElement | null = event.target ? (event.target as HTMLElement).closest('[data-control-btn]') : null
       if (!button)
         return
 
@@ -110,28 +112,24 @@ const MarkdownItDiagramDomScript: () => void = function () {
         },
       }
 
-      const className: string | undefined = button.classList[1]
-      const action: (() => void) | undefined = actionMap[className]
+      const btnName: string | undefined = button.dataset.controlBtn as string
+      const action: (() => void) | undefined = actionMap[btnName]
       if (action)
         action()
     }
 
     container.addEventListener('mouseenter', () => {
-      const controlPanel: Element | null = container.querySelector('.viewer-control-panel')
-      const detailsPanel: Element | null = container.querySelector('.details-controller')
-      if (controlPanel)
+      const controlPanels: NodeListOf<Element> = container.querySelectorAll('[data-control-panel]')
+      controlPanels.forEach((controlPanel) => {
         controlPanel.addEventListener('click', handleButtonClick)
-      if (detailsPanel)
-        detailsPanel.addEventListener('click', handleButtonClick)
+      })
     })
 
     container.addEventListener('mouseleave', () => {
-      const controlPanel: Element | null = container.querySelector('.viewer-control-panel')
-      const detailsPanel: Element | null = container.querySelector('.details-controller')
-      if (controlPanel)
+      const controlPanels: NodeListOf<Element> = container.querySelectorAll('[data-control-panel]')
+      controlPanels.forEach((controlPanel) => {
         controlPanel.removeEventListener('click', handleButtonClick)
-      if (detailsPanel)
-        detailsPanel.removeEventListener('click', handleButtonClick)
+      })
     })
   })
 }

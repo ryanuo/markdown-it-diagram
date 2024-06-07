@@ -5,7 +5,7 @@ import { type MermaidOptions, SelectorEnum } from './types'
 
 const functions = {
   options: {
-    isController: true,
+    showController: false,
   } as MermaidOptions,
 
   initialize(options: MermaidOptions): void {
@@ -16,7 +16,7 @@ const functions = {
   getMarkup(code: string): string {
     const content = removeTripleBackticks(code)
     const img = `<pre class="mermaid ${SelectorEnum.IMG}">\n${content}\n</pre>\n`
-    if (!this.options.isController)
+    if (!this.options.showController)
       return img
     return getController(code, img)
   },

@@ -26,7 +26,8 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
   if (content) {
     const modalBody = modalElement?.querySelector('.modal-body')
     if (modalBody) {
-      modalBody.innerHTML = content
+      modalBody.innerHTML = content;
+      (modalElement.querySelector('[data-control-btn="dialog"]') as HTMLElement)!.style.display = 'none'
     }
   }
 
@@ -44,7 +45,7 @@ const MarkdownItDiagramDomScript: (selector?: ContainterSelector) => void = func
 
   // setup modal handler
   if (!document.getElementById(SelectorEnum.MODAL))
-    document.body.insertAdjacentHTML('beforeend', `<pp-modal title='1' id="${SelectorEnum.MODAL}"></pp-modal>`)
+    document.body.insertAdjacentHTML('beforeend', `<pp-modal id="${SelectorEnum.MODAL}"></pp-modal>`)
   containers.forEach((container: Element) => {
     const diagram: HTMLElement | null = container.querySelector(`.${SelectorEnum.IMG}`)
     if (!diagram) {

@@ -16,12 +16,13 @@ class Modal extends HTMLElement {
           display: none;
           position: fixed;
           z-index: 97;
-          padding-top: 80px;
           left: 0;
           top: 0;
           width: 100%;
           height: 100%;
           overflow: auto;
+          justify-content: center;
+          align-items: center;
       }
 
       .modal-mask{
@@ -136,7 +137,7 @@ class Modal extends HTMLElement {
 
   public _showModal() {
     if (this._modal) {
-      this._modal.style.display = 'block'
+      this._modal.style.display = 'flex'
     }
   }
 

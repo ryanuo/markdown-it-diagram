@@ -105,7 +105,6 @@ class Modal extends HTMLElement {
           margin: 20px 2px
       }
   </style>
-  <button>Open Modal</button>
   <div class="modal">
       <div class="modal-mask"></div>
       <div class="modal-content">
@@ -124,13 +123,11 @@ class Modal extends HTMLElement {
 
   connectedCallback() {
     this._modal = this!.querySelector('.modal') as HTMLElement
-    this?.querySelector('button')?.addEventListener('click', this._showModal.bind(this))
     this?.querySelector('.close')?.addEventListener('click', this._hideModal.bind(this))
     this?.querySelector('.modal-mask')?.addEventListener('click', this._hideModal.bind(this))
   }
 
   disconnectedCallback() {
-    this?.querySelector('button')?.removeEventListener('click', this._showModal)
     this?.querySelector('.close')?.removeEventListener('click', this._hideModal)
     this?.querySelector('.modal-mask')?.removeEventListener('click', this._hideModal)
   }

@@ -40,7 +40,7 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
  *
  * @param selector [data-controll-panel-container-modal] | [data-controll-panel-container]
  */
-const MarkdownItDiagramDomScript: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
+const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
   const containers: NodeListOf<Element> = document.querySelectorAll(selector)
 
   // setup modal handler
@@ -151,7 +151,7 @@ const MarkdownItDiagramDomScript: (selector?: ContainterSelector) => void = func
         'right': () => panDiagram('right'),
         'copy': () => copyToClipboard(button),
         'dialog': () => {
-          setupModalHandler(`#${SelectorEnum.MODAL}`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => MarkdownItDiagramDomScript('[data-controll-panel-container-modal]'))
+          setupModalHandler(`#${SelectorEnum.MODAL}`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => markdownItDiagramDom('[data-controll-panel-container-modal]'))
           console.warn(event)
         },
       }
@@ -178,4 +178,4 @@ const MarkdownItDiagramDomScript: (selector?: ContainterSelector) => void = func
   })
 }
 
-export { MarkdownItDiagramDomScript }
+export { markdownItDiagramDom }

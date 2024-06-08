@@ -94,7 +94,7 @@ If you open the controller, you need to import the script in the initialization.
 vue3 example:
 ```vue
 <script setup lang="ts">
-import MarkdownItDiagrams from 'markdown-it-diagram/dom'
+import { markdownItDiagramDom } from 'markdown-it-diagram/dom'
 import { onMounted } from 'vue'
 onMounted(async () => {
   // if you want to use mermaid, you need to install mermaid.js
@@ -103,7 +103,7 @@ onMounted(async () => {
   mermaid.initialize({ startOnLoad: false })
   await mermaid.run()
   // initialize markdown-it-diagram/dom script
-  await MarkdownItDiagramDomScript()
+  await markdownItDiagramDom()
 })
 </script>
 ```

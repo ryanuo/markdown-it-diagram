@@ -1,14 +1,10 @@
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
-import './modal'
+import { DiagarmModal } from './modal'
 
 import './style.css'
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'pp-modal': Modal
-  }
-}
+customElements.define('pp-modal', DiagarmModal)
 
 /**
  *
@@ -17,7 +13,7 @@ declare global {
  * @returns
  */
 export function setupModalHandler(modalSelector: string, content: string, runScript?: () => void) {
-  const modalElement = document.querySelector(modalSelector) as Modal
+  const modalElement = document.querySelector(modalSelector) as DiagarmModal
   if (!modalElement) {
     console.error(`Modal element not found for selector: ${modalSelector}`)
     return
@@ -31,7 +27,7 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
     }
   }
 
-  modalElement._showModal()
+  modalElement?._showModal()
 
   runScript?.()
 }

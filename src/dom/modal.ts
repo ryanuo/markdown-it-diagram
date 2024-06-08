@@ -1,4 +1,4 @@
-class Modal extends HTMLElement {
+export class DiagarmModal extends HTMLElement {
   private _modal: HTMLElement | null | undefined
   private _title: string | null | undefined
 
@@ -145,5 +145,3 @@ class Modal extends HTMLElement {
     }
   }
 }
-
-customElements.define('pp-modal', Modal)

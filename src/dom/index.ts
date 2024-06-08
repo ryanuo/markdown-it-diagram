@@ -1,10 +1,7 @@
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
-import { DiagarmModal } from './modal'
-
 import './style.css'
-
-customElements.define('pp-modal', DiagarmModal)
+import { DiagarmModal } from './modal'
 
 /**
  *
@@ -13,7 +10,7 @@ customElements.define('pp-modal', DiagarmModal)
  * @returns
  */
 export function setupModalHandler(modalSelector: string, content: string, runScript?: () => void) {
-  const modalElement = document.querySelector(modalSelector) as DiagarmModal
+  const modalElement = document.querySelector(modalSelector)
   if (!modalElement) {
     console.error(`Modal element not found for selector: ${modalSelector}`)
     return
@@ -27,8 +24,6 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
     }
   }
 
-  modalElement?._showModal()
-
   runScript?.()
 }
 
@@ -39,9 +34,11 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
 const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
   const containers: NodeListOf<Element> = document.querySelectorAll(selector)
 
+  let diagramModal: DiagarmModal | null = null
+
   // setup modal handler
-  if (!document.getElementById(SelectorEnum.MODAL))
-    document.body.insertAdjacentHTML('beforeend', `<pp-modal id="${SelectorEnum.MODAL}"></pp-modal>`)
+  if (!document.querySelector(`[${SelectorEnum.MODAL}]`))
+    diagramModal = new DiagarmModal(SelectorEnum.MODAL)
   containers.forEach((container: Element) => {
     const diagram: HTMLElement | null = container.querySelector(`.${SelectorEnum.IMG}`)
     if (!diagram) {
@@ -147,8 +144,10 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
         'right': () => panDiagram('right'),
         'copy': () => copyToClipboard(button),
         'dialog': () => {
-          setupModalHandler(`#${SelectorEnum.MODAL}`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => markdownItDiagramDom('[data-controll-panel-container-modal]'))
-          console.warn(event)
+          setupModalHandler(`[${SelectorEnum.MODAL}]`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => {
+            diagramModal?._showModal()
+            markdownItDiagramDom('[data-controll-panel-container-modal]')
+          })
         },
       }
 

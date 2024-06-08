@@ -1,135 +1,30 @@
-export class DiagarmModal extends HTMLElement {
-  private _modal: HTMLElement | null | undefined
-  private _title: string | null | undefined
+export class DiagarmModal {
+  readonly _modal: HTMLElement | null
+  private _title: string
+  private _selector: string
 
-  constructor() {
-    super()
+  constructor(selector: string) {
     this._modal = null
     this._title = ''
+    this._selector = selector
 
-    // Create a shadow root that we can use for styling purposes
-    // this.attachShadow({ mode: 'open' })
-    this.innerHTML = `
-      <style>
-      /* The Modal (background) */
-      .modal {
-          display: none;
-          position: fixed;
-          z-index: 97;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          justify-content: center;
-          align-items: center;
-      }
+    // Create the modal structure
+    const modalWrapper = document.createElement('div')
+    modalWrapper.setAttribute(this._selector, '')
+    modalWrapper.innerHTML = `
+        <div class="modal-mask"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h3>${this._title}</h3>
+            </div>
+            <div class="modal-body"></div>
+        </div>`
 
-      .modal-mask{
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background-color: rgba(0, 0, 0, 0.4);
-          backdrop-filter: blur(7px);
-          width: 100%;
-          height: 100%;
-          z-index: -1;
-      }
-
-      /* Modal Content */
-      .modal-content {
-          position: relative;
-          background-color: #fefefe;
-          margin: auto;
-          padding: 0;
-          border: 1px solid #888;
-          width: 80%;
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-          -webkit-animation-name: animatetop;
-          -webkit-animation-duration: 0.4s;
-          animation-name: animatetop;
-          animation-duration: 0.4s;
-          border-radius: 5px;
-      }
-
-      /* Add Animation */
-      @-webkit-keyframes animatetop {
-          from {
-              top: -300px;
-              opacity: 0
-          }
-
-          to {
-              top: 0;
-              opacity: 1
-          }
-      }
-
-      @keyframes animatetop {
-          from {
-              top: -300px;
-              opacity: 0
-          }
-
-          to {
-              top: 0;
-              opacity: 1
-          }
-      }
-
-      /* The Close Button */
-      .close {
-          color: #000000;
-          float: right;
-          font-size: 18px;
-          font-weight: bold;
-      }
-
-      .close:hover,
-      .close:focus {
-          transform: scale(1.2);
-          text-decoration: none;
-          cursor: pointer;
-      }
-
-      .modal-header {
-          padding: 2px 16px;
-          background-color: #434e552e;
-          color: #000000;
-      }
-
-      .modal-body {
-          padding: 2px 16px;
-          margin: 20px 2px
-      }
-  </style>
-  <div class="modal">
-      <div class="modal-mask"></div>
-      <div class="modal-content">
-          <div class="modal-header">
-              <span class="close">&times;</span>
-              <slot name="header">
-                  <h3>${this._title}</h3>
-              </slot>
-          </div>
-          <div class="modal-body">
-              <slot></slot>
-          </div>
-      </div>
-  </div>`
-  }
-
-  connectedCallback() {
-    this._modal = this!.querySelector('.modal') as HTMLElement
-    this?.querySelector('.close')?.addEventListener('click', this._hideModal.bind(this))
-    this?.querySelector('.modal-mask')?.addEventListener('click', this._hideModal.bind(this))
-  }
-
-  disconnectedCallback() {
-    this?.querySelector('.close')?.removeEventListener('click', this._hideModal)
-    this?.querySelector('.modal-mask')?.removeEventListener('click', this._hideModal)
+    document.body.insertAdjacentElement('beforeend', modalWrapper)
+    this._modal = modalWrapper
+    // Bind event listeners
+    this.connectedCallback()
   }
 
   public _showModal() {
@@ -140,8 +35,23 @@ export class DiagarmModal extends HTMLElement {
 
   public _hideModal() {
     if (this._modal) {
+      this.disconnectedCallback()
       this._modal.style.display = 'none'
-      this._modal.querySelector('.modal-body')!.innerHTML = ''
+      const modalBody = this._modal.querySelector('.modal-body')
+      if (modalBody)
+        modalBody.innerHTML = ''
     }
+  }
+
+  private connectedCallback() {
+    // Implement connectedCallback to add event listeners
+    this._modal!.querySelector('.close')?.addEventListener('click', this._hideModal.bind(this))
+    this._modal!.querySelector('.modal-mask')?.addEventListener('click', this._hideModal.bind(this))
+  }
+
+  private disconnectedCallback() {
+    // Implement disconnectedCallback to remove event listeners
+    this._modal?.querySelector('.close')?.removeEventListener('click', this._hideModal)
+    this._modal?.querySelector('.modal-mask')?.removeEventListener('click', this._hideModal)
   }
 }

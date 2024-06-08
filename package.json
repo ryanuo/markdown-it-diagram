@@ -1,7 +1,7 @@
 {
   "name": "markdown-it-diagram",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "packageManager": "pnpm@9.1.4",
   "description": "Supports markdown diagramming.",
   "author": "RyanCo <ryanco@aliyun.com>",
@@ -13,7 +13,17 @@
     "url": "git+https://github.com/rr210/markdown-it-diagram.git"
   },
   "bugs": "https://github.com/rr210/markdown-it-diagram/issues",
-  "keywords": ["markdown-it", "markdown", "diagram", "mermaid", "plantuml", "zoom", "move", "control", "markdown-it-diagram"],
+  "keywords": [
+    "markdown-it",
+    "markdown",
+    "diagram",
+    "mermaid",
+    "plantuml",
+    "zoom",
+    "move",
+    "control",
+    "markdown-it-diagram"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {

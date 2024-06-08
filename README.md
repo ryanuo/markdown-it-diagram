@@ -12,6 +12,105 @@ markdown-it-diagram is a markdown-it plugin for diagram. It supports mermaid, pl
 
 [MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/rr210)
 
+## UML examples
+Markdown fence identifier：[plantuml](https://plantuml.com/)、[mermaid](https://github.com/mermaid-js/mermaid)、[dot](https://graphviz.gitlab.io/doc/info/lang.html)、[ditaa](https://ditaa.sourceforge.net/)
+
+### PlantUML
+
+[online](https://www.plantuml.com/plantuml/uml/)
+
+````markdown
+```plantuml
+Bob -> Alice : hello
+```
+````
+![plantuml](./assets/plantuml.png)
+
+### DOT
+
+````markdown
+```dot
+digraph example1 {
+    1 -> 2 -> { 4, 5 };
+    1 -> 3 -> { 6, 7 };
+}
+```
+````
+![dot](./assets/dot.png)
+
+### ditaa
+> [!WARNING]
+> On PlantUML, only PNG generation is supported.
+````
+```ditaa
++--------+   +-------+    +-------+
+    |        | --+ ditaa +--> |       |
+    |  Text  |   +-------+    |diagram|
+    |Document|   |!magic!|    |       |
+    |     {d}|   |       |    |       |
+    +---+----+   +-------+    +-------+
+        :                         ^
+        |       Lots of work      |
+        +-------------------------+
+```
+````
+![ditaa](./assets/ditaa.png)
+
+### mermaid
+
+````markdown
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+````
+![mermaid](./assets/mermaid.png)
+
+## Install
+```bash
+npm install markdown-it-diagram --save
+```
+## Usage
+vite.config.ts
+```ts
+import MarkdownItDiagrams from 'markdown-it-diagram'
+import Markdown from 'unplugin-vue-markdown/vite'
+export default defineConfig({
+  plugins: [
+    Markdown({
+      markdownItSetup(md) {
+        md.use(MarkdownItDiagrams, {
+          showController: true, // show controller,default:false
+        })
+      }
+    })
+  ]
+})
+```
+If you open the controller, you need to import the script in the initialization.
+vue3 example:
+```vue
+<script setup lang="ts">
+import MarkdownItDiagrams from 'markdown-it-diagram/dom'
+import { onMounted } from 'vue'
+onMounted(async () => {
+  // if you want to use mermaid, you need to install mermaid.js
+  // npm install mermaid
+  // import mermaid from 'mermaid'
+  mermaid.initialize({ startOnLoad: false })
+  await mermaid.run()
+  // initialize markdown-it-diagram/dom script
+  await MarkdownItDiagramDomScript()
+})
+</script>
+```
+## References
+
+[markdown-it-textual-uml](https://github.com/manastalukdar/markdown-it-textual-uml)
+
 <!-- Badges -->
 
 [npm-version-src]: https://img.shields.io/npm/v/markdown-it-diagram?style=flat&colorA=080f12&colorB=1fa669

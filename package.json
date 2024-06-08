@@ -13,7 +13,7 @@
     "url": "git+https://github.com/rr210/markdown-it-diagram.git"
   },
   "bugs": "https://github.com/rr210/markdown-it-diagram/issues",
-  "keywords": [],
+  "keywords": ["markdown-it", "markdown", "diagram", "mermaid", "plantuml", "zoom", "move", "control", "markdown-it-diagram"],
   "sideEffects": false,
   "exports": {
     ".": {

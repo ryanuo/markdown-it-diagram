@@ -37,5 +37,10 @@
     "json",
     "jsonc",
     "yaml"
+  ],
+  "cSpell.words": [
+    "ditaa",
+    "Plantuml",
+    "platuml"
   ]
 }

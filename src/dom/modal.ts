@@ -1,11 +1,13 @@
+import { SelectorEnum } from './types'
+
 export class DiagarmModal {
   readonly _modal: HTMLElement | null
   private _title: string
   private _selector: string
 
-  constructor(selector: string) {
+  constructor(selector: string = `[${SelectorEnum.MODAL}]`, title: string = '') {
     this._modal = null
-    this._title = ''
+    this._title = title
     this._selector = selector
 
     // Create the modal structure
@@ -35,7 +37,6 @@ export class DiagarmModal {
 
   public _hideModal() {
     if (this._modal) {
-      this.disconnectedCallback()
       this._modal.style.display = 'none'
       const modalBody = this._modal.querySelector('.modal-body')
       if (modalBody)
@@ -47,11 +48,5 @@ export class DiagarmModal {
     // Implement connectedCallback to add event listeners
     this._modal!.querySelector('.close')?.addEventListener('click', this._hideModal.bind(this))
     this._modal!.querySelector('.modal-mask')?.addEventListener('click', this._hideModal.bind(this))
-  }
-
-  private disconnectedCallback() {
-    // Implement disconnectedCallback to remove event listeners
-    this._modal?.querySelector('.close')?.removeEventListener('click', this._hideModal)
-    this._modal?.querySelector('.modal-mask')?.removeEventListener('click', this._hideModal)
   }
 }

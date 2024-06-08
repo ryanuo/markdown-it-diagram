@@ -8,10 +8,6 @@
 
 markdown-it-diagram is a markdown-it plugin for diagram. It supports mermaid, plantuml. It supports contorls like zoom, move.
 
-## License
-
-[MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/rr210)
-
 ## UML examples
 Markdown fence identifier：[plantuml](https://plantuml.com/)、[mermaid](https://github.com/mermaid-js/mermaid)、[dot](https://graphviz.gitlab.io/doc/info/lang.html)、[ditaa](https://ditaa.sourceforge.net/)
 
@@ -109,7 +105,12 @@ onMounted(async () => {
 ```
 ## References
 
-[markdown-it-textual-uml](https://github.com/manastalukdar/markdown-it-textual-uml)
+- [markdown-it-textual-uml](https://github.com/manastalukdar/markdown-it-textual-uml)
+- [markdown-it](https://github.com/markdown-it/markdown-it)
+
+## License
+
+[MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/rr210)
 
 <!-- Badges -->
 

@@ -4,12 +4,11 @@ import './style.css'
 import { DiagarmModal } from './modal'
 
 /**
- *
  * @param modalSelector
  * @param content
  * @returns
  */
-export function setupModalHandler(modalSelector: string, content: string, runScript?: () => void) {
+export function setupModalHandler(modalSelector: string, content: string, callback?: () => void) {
   const modalElement = document.querySelector(modalSelector)
   if (!modalElement) {
     console.error(`Modal element not found for selector: ${modalSelector}`)
@@ -24,12 +23,12 @@ export function setupModalHandler(modalSelector: string, content: string, runScr
     }
   }
 
-  runScript?.()
+  callback?.()
 }
 
 /**
- *
- * @param selector [data-controll-panel-container-modal] | [data-controll-panel-container]
+ * @param selector
+ * [data-controll-panel-container-modal] | [data-controll-panel-container]
  */
 const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
   const containers: NodeListOf<Element> = document.querySelectorAll(selector)
@@ -38,7 +37,7 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
 
   // setup modal handler
   if (!document.querySelector(`[${SelectorEnum.MODAL}]`))
-    diagramModal = new DiagarmModal(SelectorEnum.MODAL)
+    diagramModal = new DiagarmModal()
   containers.forEach((container: Element) => {
     const diagram: HTMLElement | null = container.querySelector(`.${SelectorEnum.IMG}`)
     if (!diagram) {

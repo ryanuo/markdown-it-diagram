@@ -17,7 +17,7 @@ const functions = {
   },
 
   getOptions(langName: LangType) {
-    return this.options?.[langName] ? Object.assign(this.options, this.options?.[langName]) : this.options
+    return this.options?.[langName] ? Object.assign({}, this.options, this.options?.[langName]) : this.options
   },
 
   getMarkup(code: string, diagramName: string, langName: LangType): string {

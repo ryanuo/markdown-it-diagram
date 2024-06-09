@@ -36,7 +36,7 @@ digraph example1 {
 
 ### ditaa
 > [!WARNING]
-> On PlantUML, only PNG generation is supported.
+> On PlantUML, only PNG,TXT generation is supported.
 ````
 ```ditaa
 +--------+   +-------+    +-------+

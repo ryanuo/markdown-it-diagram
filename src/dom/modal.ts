@@ -5,7 +5,7 @@ export class DiagarmModal {
   private _title: string
   private _selector: string
 
-  constructor(selector: string = `[${SelectorEnum.MODAL}]`, title: string = '') {
+  constructor(selector: string = SelectorEnum.MODAL, title: string = '') {
     this._modal = null
     this._title = title
     this._selector = selector

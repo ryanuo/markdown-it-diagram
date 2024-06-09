@@ -22,9 +22,9 @@ const MarkdownItDiagrams: PluginWithOptions<PlantumlOptions> = (md, options = {}
         return mermaidFunctions.default.functions.getMarkup(code)
       case 'plantuml':
       case 'dot':
-        return platumlFunctions.default.functions.getMarkup(code, 'uml')
+        return platumlFunctions.default.functions.getMarkup(code, 'uml', langName)
       case 'ditaa':
-        return platumlFunctions.default.functions.getMarkup(code, 'ditaa')
+        return platumlFunctions.default.functions.getMarkup(code, 'ditaa', langName)
     }
     return defaultRenderer(tokens, idx, options, env, slf)
   }

@@ -80,6 +80,18 @@ export default defineConfig({
       markdownItSetup(md) {
         md.use(MarkdownItDiagrams, {
           showController: true, // show controller,default:false
+          /**
+           * PlantUML options
+           * ditaa:imageFormat 'png| txt'
+           * plantuml: imageFormat'png| svg| txt'
+           * dot: imageFormat'png| svg| txt'
+           */
+          // imageFormat: 'svg', // image format:svg|png|txt,default:svg
+          // server: '', // plantuml server,default:http://www.plantuml.com/plantuml
+          // ditaa: {
+          // imageFormat: 'svg', // image format:png|txt,default:svg
+          // server: '', // plantuml server,default:http://www.plantuml.com/plantuml
+          // }
         })
       }
     })

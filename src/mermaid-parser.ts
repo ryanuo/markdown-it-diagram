@@ -15,7 +15,7 @@ const functions = {
 
   getMarkup(code: string): string {
     const content = removeTripleBackticks(code)
-    const img = `<pre class="mermaid ${SelectorEnum.IMG}">\n${content}\n</pre>\n`
+    const img = `<pre data-svg="${SelectorEnum.MERMAID}" class="mermaid ${SelectorEnum.IMG}">\n${content}\n</pre>\n`
     if (!this.options.showController)
       return img
     return getController(code, img)

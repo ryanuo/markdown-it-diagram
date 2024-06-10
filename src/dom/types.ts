@@ -7,6 +7,8 @@ export interface ActionMap {
 export enum SelectorEnum {
   IMG = 'diagram-m',
   MODAL = 'data-diagram-modal',
+  PLANTUML = 'data-diagram-plantuml',
+  MERMAID = 'data-diagram-mermaid',
 }
 
 export type ContainterSelector = '[data-controll-panel-container-modal]' | '[data-controll-panel-container]'

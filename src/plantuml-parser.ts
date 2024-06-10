@@ -21,18 +21,22 @@ const functions = {
   },
 
   getMarkup(code: string, diagramName: string, langName: LangType): string {
-    const srcVal = this.generateSource(code, diagramName, this.getOptions(langName))
-    const img = `<img class="${SelectorEnum.IMG}" src="${srcVal}" alt="uml diagram">`
+    const opt = this.getOptions(langName)
+    const srcVal = this.generateSource(code, diagramName, opt)
+    const img = `<div data-${opt.imageFormat || 'svg'}="${SelectorEnum.PLANTUML}" class="${SelectorEnum.IMG}"><img src="${srcVal}" alt="uml diagram"></div>`
     if (!this.options.showController)
       return img
 
     return getController(code, img)
   },
 
-  generateSource(umlCode: string, diagramMarker: string, pluginOptions: PlantumlOptions): string {
+  generateSource(umlCode: string, diagramName: string, pluginOptions: PlantumlOptions): string {
+    let umlContent = umlCode
+    if (!umlCode.startsWith('@start')) {
+      umlContent = `@start${diagramName}\n${umlCode}\n@end${diagramName}`
+    }
     const imageFormat = pluginOptions?.imageFormat || 'svg'
     const server = pluginOptions?.server || 'https://www.plantuml.com/plantuml'
-    const umlContent = `@start${diagramMarker}\n${umlCode}\n@end${diagramMarker}`
     const zippedCode = deflate.zip_deflate(umlContent, 9)
     const base64Encoded = deflate.encode64(zippedCode)
     return `${server}/${imageFormat}/${base64Encoded}`

@@ -67,6 +67,9 @@
     "@types/markdown-it": "*",
     "markdown-it": "^14.0.0"
   },
+  "dependencies": {
+    "svg2roughjs": "^3.2.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.20.0",
     "@antfu/ni": "^0.21.12",

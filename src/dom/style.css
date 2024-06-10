@@ -17,7 +17,7 @@ div[data-controll-panel-container-modal] {
 }
 div[data-controll-panel-container] .fg-none,
 div[data-controll-panel-container-modal] .fg-none {
-  display: none;
+  display: none !important;
 }
 div[data-controll-panel-container] .fg-success,
 div[data-controll-panel-container-modal] .fg-success {
@@ -34,7 +34,9 @@ div[data-controll-panel-container-modal] img[alt="uml diagram"] {
   border-radius: 6px;
 }
 div[data-controll-panel-container] .mermaid svg,
-div[data-controll-panel-container-modal] .mermaid svg {
+div[data-controll-panel-container-modal] .mermaid svg,
+div[data-controll-panel-container] .diagram-m svg,
+div[data-controll-panel-container-modal] .diagram-m svg {
   margin: 20px auto;
 }
 .fg-show {
@@ -149,7 +151,8 @@ div[data-control-panel="details"] {
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 80%;
+  max-width: 80%;
+  min-width: 60%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;

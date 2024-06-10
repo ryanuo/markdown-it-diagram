@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@panzoom/panzoom':
+        specifier: ^4.5.1
+        version: 4.5.1
       '@types/markdown-it':
         specifier: '*'
         version: 14.1.1
@@ -574,6 +577,9 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@panzoom/panzoom@4.5.1':
+    resolution: {integrity: sha512-QOr/t7314XTwgAUDazR+RDcTAWSbkpjDnZJddd9f56jSUA8ptUsyDblAb+sp/O5O1o5Fiu9KpWxVHKuhGUgp5w==}
 
   '@rollup/plugin-alias@5.1.0':
     resolution: {integrity: sha512-lpA3RZ9PdIG7qqhEfv79tBffNaoDuukFDrmhLqg9ifv99u/ehn+lOg30x2zmhf8AQqQUZaMk/B9fZraQ6/acDQ==}
@@ -3455,6 +3461,8 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@panzoom/panzoom@4.5.1': {}
 
   '@rollup/plugin-alias@5.1.0(rollup@3.29.4)':
     dependencies:

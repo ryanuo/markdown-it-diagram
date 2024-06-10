@@ -1,5 +1,6 @@
 import { Svg2Roughjs } from 'svg2roughjs'
-
+import type { PanzoomObject } from '@panzoom/panzoom'
+import Panzoom from '@panzoom/panzoom'
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
 import './style.css'
@@ -62,74 +63,23 @@ async function copyToClipboard(btn: HTMLElement): Promise<void> {
  * @param direction
  * @returns
  */
-function panDiagram(diagram: HTMLElement | null, direction: PanDirection): void {
-  if (!diagram)
+function panDiagram(panzoom: PanzoomObject | null, direction: PanDirection): void {
+  if (!panzoom)
     return
-  const currentTransform: string = diagram?.style.transform || 'translate(0px, 0px) scale(1)'
-  let [translateStr, scaleStr] = currentTransform.split(' scale')
-  translateStr = translateStr.trim()
-  scaleStr = scaleStr ? ` scale${scaleStr.trim()}` : ''
-  const transformValues: string[] = translateStr.replace('translate(', '').replace(')', '').split(',')
-  let x: number = Number.parseInt(transformValues[0].trim())
-  let y: number = Number.parseInt(transformValues[1].trim())
 
   switch (direction) {
     case 'up':
-      y -= 20
+      panzoom.pan(0, -10, { relative: true })
       break
     case 'down':
-      y += 20
+      panzoom.pan(0, 10, { relative: true })
       break
     case 'left':
-      x -= 20
+      panzoom.pan(-10, 0, { relative: true })
       break
     case 'right':
-      x += 20
+      panzoom.pan(10, 0, { relative: true })
       break
-  }
-
-  diagram.style.transform = `translate(${x}px, ${y}px)${scaleStr}`
-}
-
-/**
- * DiagramController zoom in/out
- */
-class DiagramController {
-  private scale: number
-  private diagram: HTMLElement | null
-
-  constructor(diagram: HTMLElement) {
-    this.diagram = diagram
-    this.scale = 1
-    this.resetView()
-  }
-
-  zoomIn(): void {
-    this.scale *= 1.2
-    this.applyScale()
-  }
-
-  zoomOut(): void {
-    this.scale /= 1.2
-    if (this.scale < 0.1) {
-      this.scale = 0.1
-    }
-    this.applyScale()
-  }
-
-  resetView(): void {
-    if (!this.diagram)
-      return
-    this.scale = 1
-    this.diagram.style.transform = 'translate(0px, 0px) scale(1)'
-  }
-
-  private applyScale(): void {
-    if (!this.diagram)
-      return
-    const currentTransform: string = this.diagram.style.transform || 'translate(0px, 0px) scale(1)'
-    const [translateStr] = currentTransform.split(' scale')
-    this.diagram.style.transform = `${translateStr} scale(${this.scale})`
   }
 }
 
@@ -224,7 +174,6 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
       return
     }
 
-    const diagramController = new DiagramController(diagram)
     const svgContainer = container.querySelector('[data-svg]')
     let svgTemp = null
     if (svgContainer) {
@@ -235,19 +184,28 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
       }
     }
 
+    const panzoom = Panzoom(diagram)
+    const parent = diagram.parentElement as HTMLElement
+    // This demo binds to shift + wheel
+    parent.addEventListener('wheel', (event) => {
+      if (!event.shiftKey)
+        return
+      panzoom.zoomWithWheel(event)
+    })
+
     const handleButtonClick = (event: Event): void => {
       const button: HTMLElement | null = event.target ? (event.target as HTMLElement).closest('[data-control-btn]') : null
       if (!button || !diagram)
         return
 
       const actionMap: ActionMap = {
-        'zoom-in': () => diagramController.zoomIn(),
-        'zoom-out': () => diagramController.zoomOut(),
-        'reset': () => diagramController.resetView(),
-        'up': () => panDiagram(diagram, 'up'),
-        'down': () => panDiagram(diagram, 'down'),
-        'left': () => panDiagram(diagram, 'left'),
-        'right': () => panDiagram(diagram, 'right'),
+        'zoom-in': () => panzoom.zoomIn(),
+        'zoom-out': () => panzoom.zoomOut(),
+        'reset': () => panzoom.reset(),
+        'up': () => panDiagram(panzoom, 'up'),
+        'down': () => panDiagram(panzoom, 'down'),
+        'left': () => panDiagram(panzoom, 'left'),
+        'right': () => panDiagram(panzoom, 'right'),
         'copy': () => copyToClipboard(button),
         'dialog': () => {
           setupModalHandler(`[${SelectorEnum.MODAL}]`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => {

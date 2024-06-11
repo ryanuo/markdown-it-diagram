@@ -122,7 +122,7 @@ onMounted(async () => {
 
 ## License
 
-[MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/rr210)
+[MIT](./LICENSE) License © 2023-PRESENT [RyanCo](https://github.com/ryanuo)
 
 <!-- Badges -->
 
@@ -132,7 +132,7 @@ onMounted(async () => {
 [npm-downloads-href]: https://npmjs.com/package/markdown-it-diagram
 [bundle-src]: https://img.shields.io/bundlephobia/minzip/markdown-it-diagram?style=flat&colorA=080f12&colorB=1fa669&label=minzip
 [bundle-href]: https://bundlephobia.com/result?p=markdown-it-diagram
-[license-src]: https://img.shields.io/github/license/rr210/markdown-it-diagram.svg?style=flat&colorA=080f12&colorB=1fa669
-[license-href]: https://github.com/rr210/markdown-it-diagram/blob/main/LICENSE
+[license-src]: https://img.shields.io/github/license/ryanuo/markdown-it-diagram.svg?style=flat&colorA=080f12&colorB=1fa669
+[license-href]: https://github.com/ryanuo/markdown-it-diagram/blob/main/LICENSE
 [jsdocs-src]: https://img.shields.io/badge/jsdocs-reference-080f12?style=flat&colorA=080f12&colorB=1fa669
 [jsdocs-href]: https://www.jsdocs.io/package/markdown-it-diagram

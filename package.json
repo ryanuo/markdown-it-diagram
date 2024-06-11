@@ -6,13 +6,13 @@
   "description": "Supports markdown diagramming.",
   "author": "RyanCo <ryanco@aliyun.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/rr210",
-  "homepage": "https://github.com/rr210/markdown-it-diagram#readme",
+  "funding": "https://github.com/sponsors/ryanuo",
+  "homepage": "https://github.com/ryanuo/markdown-it-diagram#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rr210/markdown-it-diagram.git"
+    "url": "git+https://github.com/ryanuo/markdown-it-diagram.git"
   },
-  "bugs": "https://github.com/rr210/markdown-it-diagram/issues",
+  "bugs": "https://github.com/ryanuo/markdown-it-diagram/issues",
   "keywords": [
     "markdown-it",
     "markdown",

@@ -52,7 +52,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
+    "build": "pnpm run less && unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
     "prepublishOnly": "nr build",

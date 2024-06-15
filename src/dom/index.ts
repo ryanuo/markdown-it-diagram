@@ -3,8 +3,26 @@ import type { PanzoomObject } from '@panzoom/panzoom'
 import Panzoom from '@panzoom/panzoom'
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
-import './style.css'
 import { DiagarmModal } from './modal'
+import { css } from './style'
+
+export function injectStyle(styleId: string): void {
+  // Check if the style tag with the specified ID already exists
+  if (!document.getElementById(styleId)) {
+    // Create a new style element
+    const styleElement = document.createElement('style')
+    styleElement.id = styleId
+    styleElement.textContent = css
+
+    // Append the style element to the document head
+    document.head.appendChild(styleElement)
+
+    console.warn(`Style with ID '${styleId}' injected successfully.`)
+  }
+  else {
+    console.warn(`Style with ID '${styleId}' already exists.`)
+  }
+}
 
 /**
  * diagram modal
@@ -67,43 +85,63 @@ function panDiagram(panzoom: PanzoomObject | null, direction: PanDirection): voi
   if (!panzoom)
     return
 
-  switch (direction) {
-    case 'up':
-      panzoom.pan(0, -10, { relative: true })
-      break
-    case 'down':
-      panzoom.pan(0, 10, { relative: true })
-      break
-    case 'left':
-      panzoom.pan(-10, 0, { relative: true })
-      break
-    case 'right':
-      panzoom.pan(10, 0, { relative: true })
-      break
+  const panValues: { [key in PanDirection]: [number, number] } = {
+    up: [0, -20],
+    down: [0, 20],
+    left: [-20, 0],
+    right: [20, 0],
   }
+
+  const [x, y] = panValues[direction]
+  panzoom.pan(x, y, { relative: true, animate: true })
 }
 
-function replaceImageWithSvg(diagram: HTMLElement, svgTemp: any, callback: () => void): void {
-  const imgEle = diagram.querySelector('img')
-  const svgUrl = imgEle!.getAttribute('src')!
-  const width = imgEle!.width
-  const height = imgEle!.height
-  fetch(svgUrl)
-    .then(response => response.text())
-    .then((svgText) => {
-      const parser = new DOMParser()
-      const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')
-      const svgElement = svgDoc.documentElement
-      svgElement.setAttribute('width', `${width}px`)
-      svgElement.setAttribute('height', `${height}px`)
-      svgElement.style.width = `${width}px`
-      svgElement.style.height = `${height}px`
-      svgTemp.init = svgElement
-      callback?.()
-    })
-    .catch((error) => {
-      console.error('Error fetching and parsing SVG:', error)
-    })
+/**
+ *
+ * @param diagram
+ * @param svgTemp
+ * @param callback
+ * @returns
+ */
+async function replaceImageWithSvg(diagram: HTMLElement, svgTemp: any, callback: () => void): Promise<void> {
+  const imgEle = diagram.querySelector<HTMLImageElement>('img')
+  if (!imgEle) {
+    console.error('No image element found in the diagram.')
+    return
+  }
+
+  const svgUrl = imgEle.getAttribute('src')
+  if (!svgUrl) {
+    console.error('No src attribute found on the image element.')
+    return
+  }
+
+  const width = imgEle.width
+  const height = imgEle.height
+
+  try {
+    const response = await fetch(svgUrl)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const svgText = await response.text()
+    const parser = new DOMParser()
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')
+    const svgElement = svgDoc.documentElement
+
+    svgElement.setAttribute('width', `${width}px`)
+    svgElement.setAttribute('height', `${height}px`)
+    svgElement.style.width = `${width}px`
+    svgElement.style.height = `${height}px`
+
+    svgTemp.init = svgElement
+    if (callback)
+      callback()
+  }
+  catch (error) {
+    console.error('Error fetching and parsing SVG:', error)
+  }
 }
 
 /**
@@ -112,47 +150,49 @@ function replaceImageWithSvg(diagram: HTMLElement, svgTemp: any, callback: () =>
  * @param svgTemp svg temp dom
  * @param btn button control panel
  */
-async function svgToRough(diagram: HTMLElement, btn: HTMLElement, svgTemp: any) {
+async function svgToRough(diagram: HTMLElement | null, btn: HTMLElement, svgTemp: any): Promise<void> {
   if (!diagram)
     return
 
   const currentIdentifier = diagram.getAttribute('data-svg')
-  const btn_selectors = btn.querySelectorAll('svg')
-  btn_selectors?.forEach((btn_selector) => {
-    if (btn_selector.classList.contains('octicon-loading')) {
-      btn_selector.classList.remove('fg-none')
-    }
-    else {
-      btn_selector.classList.add('fg-none')
-    }
+  const btnSelectors = btn.querySelectorAll('svg')
+  const loadingIcon = btn.querySelector('.octicon-loading')
+  const checkIcon = btn.querySelector('.octicon-check')
+  const initIcon = btn.querySelector('.octicon-init')
+
+  btnSelectors.forEach((btnSelector) => {
+    btnSelector.classList.toggle('fg-none', !btnSelector.classList.contains('octicon-loading'))
   })
 
-  const callback = () => {
+  const callback = async () => {
     if (svgTemp.rough) {
-      diagram.replaceChildren(svgTemp?.init)
+      diagram.replaceChildren(svgTemp.init)
       svgTemp.rough = null
-      btn.querySelector('.octicon-loading')?.classList.add('fg-none')
-      btn.querySelector('.octicon-check')?.classList.add('fg-none')
-      btn.querySelector('.octicon-init')?.classList.remove('fg-none')
+      loadingIcon?.classList.add('fg-none')
+      checkIcon?.classList.add('fg-none')
+      initIcon?.classList.remove('fg-none')
     }
     else {
-      const svg2roughjs = new Svg2Roughjs(diagram as any)
+      const svg2roughjs = new Svg2Roughjs(diagram as unknown as SVGSVGElement)
       svg2roughjs.svg = svgTemp.init
-      svg2roughjs.sketch().then((res) => {
+      try {
+        const res = await svg2roughjs.sketch()
         diagram.replaceChildren(res as Node)
         svgTemp.rough = res
-      }).finally(() => {
-        btn.querySelector('.octicon-loading')?.classList.add('fg-none')
-        btn.querySelector('.octicon-check')?.classList.remove('fg-none')
-        btn.querySelector('.octicon-init')?.classList.add('fg-none')
-      })
+      }
+      finally {
+        loadingIcon?.classList.add('fg-none')
+        checkIcon?.classList.remove('fg-none')
+        initIcon?.classList.add('fg-none')
+      }
     }
   }
 
   if (currentIdentifier === SelectorEnum.PLANTUML && !svgTemp.init) {
     return replaceImageWithSvg(diagram, svgTemp, callback)
   }
-  callback()
+
+  await callback()
 }
 
 /**
@@ -161,6 +201,8 @@ async function svgToRough(diagram: HTMLElement, btn: HTMLElement, svgTemp: any) 
  */
 const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
   const containers: NodeListOf<Element> = document.querySelectorAll(selector)
+  // inject style css
+  injectStyle('diagram-css-unique')
 
   let diagramModal: DiagarmModal | null = null
 

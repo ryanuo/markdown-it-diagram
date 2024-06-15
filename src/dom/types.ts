@@ -12,3 +12,6 @@ export enum SelectorEnum {
 }
 
 export type ContainterSelector = '[data-controll-panel-container-modal]' | '[data-controll-panel-container]'
+export interface PanzoomObject {
+  pan: (x: number, y: number, options: { relative: boolean, animate: boolean }) => void
+}

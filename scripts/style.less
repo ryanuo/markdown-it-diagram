@@ -25,7 +25,6 @@ div[data-controll-panel-container-modal] {
   }
 
   img[alt="uml diagram"] {
-    border: 1px dashed #000;
     width: 45%;
     max-width: 80%;
     height: auto;
@@ -133,8 +132,14 @@ div[data-control-panel="details"] {
   position: absolute;
   top: 1em;
   right: 1em;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.2em;
+
+  [data-control-btn="download"]{
+    grid-column: 2;
+    grid-row: 2;
+  }
 }
 
 

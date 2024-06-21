@@ -144,6 +144,58 @@ async function replaceImageWithSvg(diagram: HTMLElement, svgTemp: any, callback:
   }
 }
 
+function downloadImage(diagram: HTMLElement | null) {
+  if (!diagram) {
+    console.warn('Cannot find container element')
+    return
+  }
+  const img = diagram.querySelector('img')
+  const svgObj = diagram.querySelector('svg')
+  if (img) {
+    const imgUrl = img.getAttribute('src')
+    if (imgUrl) {
+      download(imgUrl)
+    }
+  }
+  else if (svgObj) {
+    const svgString = new XMLSerializer().serializeToString(svgObj)
+    const blob = new Blob([svgString], { type: 'image/svg+xml' })
+    downloadBlob(blob)
+  }
+  else {
+    console.warn('Cannot find image or svg within container')
+  }
+}
+
+function download(urlOrBlob: string | Blob) {
+  if (typeof urlOrBlob === 'string') {
+    fetch(urlOrBlob)
+      .then(response => response.blob())
+      .then((blob) => {
+        downloadBlob(blob)
+      })
+      .catch((error) => {
+        console.error('Error downloading image:', error)
+      })
+  }
+  else {
+    downloadBlob(urlOrBlob)
+  }
+}
+
+function downloadBlob(blob: Blob, fileName?: string) {
+  fileName = fileName || new Date().getTime().toString()
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = fileName
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
 /**
  * svg diagram to rough diagram
  * @param diagram diagram container
@@ -177,6 +229,12 @@ async function svgToRough(diagram: HTMLElement | null, btn: HTMLElement, svgTemp
       svg2roughjs.svg = svgTemp.init
       try {
         const res = await svg2roughjs.sketch()
+        if (currentIdentifier === SelectorEnum.MERMAID) {
+          res?.setAttribute('style', svgTemp.init.getAttribute('style'))
+          res?.setAttribute('width', `${svgTemp.init.width.baseVal.value}px`)
+          res?.setAttribute('height', `${svgTemp.init.height.baseVal.value}px`)
+          res?.setAttribute('viewBox', svgTemp.init.getAttribute('viewBox'))
+        }
         diagram.replaceChildren(res as Node)
         svgTemp.rough = res
       }
@@ -256,6 +314,7 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
           })
         },
         'rough': () => svgToRough(diagram, button, svgTemp),
+        'download': () => downloadImage(diagram),
       }
 
       const btnName: string | undefined = button.dataset.controlBtn as string

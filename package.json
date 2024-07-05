@@ -62,7 +62,7 @@
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks",
     "less": "lessc scripts/style.less scripts/style.min.css --clean-css='--s1 --advanced --compatibility=ie8'",
-    "generate": "pnpm run less && esno scripts/generate.mts"
+    "gn": "pnpm run less && esno scripts/generate.mts"
   },
   "peerDependencies": {
     "@types/markdown-it": "*",

@@ -37,7 +37,8 @@ const functions = {
     }
     const imageFormat = pluginOptions?.imageFormat || 'svg'
     const server = pluginOptions?.server || 'https://www.plantuml.com/plantuml'
-    const zippedCode = deflate.zip_deflate(umlContent, 9)
+    const unescapeUmlContent = unescape(encodeURIComponent(umlContent))
+    const zippedCode = deflate.zip_deflate(unescapeUmlContent, 9)
     const base64Encoded = deflate.encode64(zippedCode)
     return `${server}/${imageFormat}/${base64Encoded}`
   },

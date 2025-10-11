@@ -11,14 +11,3 @@ export function encrypt(str: string): string {
   // Base64 + URI 安全
   return encodeURIComponent(btoa(xor(str)))
 }
-
-export function decrypt(str: string): string {
-  try {
-    const decoded = atob(decodeURIComponent(str))
-    return xor(decoded)
-  }
-  catch (err) {
-    console.error('Decrypt error:', err)
-    return ''
-  }
-}

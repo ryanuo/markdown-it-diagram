@@ -1,12 +1,41 @@
 import { Svg2Roughjs } from 'svg2roughjs'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import Panzoom from '@panzoom/panzoom'
-import { decompress } from '../utils/compress'
-import { decrypt } from '../utils/crypto'
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
 import { DiagarmModal } from './modal'
 import { css } from './style'
+
+function xor(str: string, key = 'ryanuo') {
+  return Array.from(str)
+    .map((c, i) =>
+      String.fromCharCode(c.charCodeAt(0) ^ key.charCodeAt(i % key.length)),
+    )
+    .join('')
+}
+export function decrypt(str: string): string {
+  try {
+    const decoded = atob(decodeURIComponent(str))
+    return xor(decoded)
+  }
+  catch (err) {
+    console.error('Decrypt error:', err)
+    return ''
+  }
+}
+
+function decompress(str: string): string {
+  try {
+    const decodedBase64 = decodeURIComponent(str)
+    const binary = atob(decodedBase64)
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0))
+    return new TextDecoder().decode(bytes)
+  }
+  catch (err) {
+    console.error('Decompress error:', err)
+    return ''
+  }
+}
 
 export function injectStyle(styleId: string): void {
   // Check if the style tag with the specified ID already exists

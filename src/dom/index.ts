@@ -26,9 +26,9 @@ export function injectStyle(styleId: string): void {
 
 /**
  * diagram modal
- * @param modalSelector
- * @param content
- * @returns
+ * @param modalSelector modal selector
+ * @param content modal content
+ * @param callback callback after setup
  */
 export function setupModalHandler(modalSelector: string, content: string, callback?: () => void) {
   const modalElement = document.querySelector(modalSelector)
@@ -54,11 +54,12 @@ export function setupModalHandler(modalSelector: string, content: string, callba
  */
 async function copyToClipboard(btn: HTMLElement): Promise<void> {
   try {
+    const svgEleList = btn.querySelectorAll('svg')
     const text: string = btn.getAttribute('data-clipboard-code') || ''
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(text)
-      const copyIcon = btn.querySelector('.octicon-init')
-      const checkIcon = btn.querySelector('.octicon-check')
+      const copyIcon = svgEleList[0]
+      const checkIcon = svgEleList[1]
       copyIcon?.classList.add('fg-none')
       checkIcon?.classList.remove('fg-none')
       setTimeout(() => {
@@ -77,9 +78,8 @@ async function copyToClipboard(btn: HTMLElement): Promise<void> {
 
 /**
  * @description move the diagram
- * @param diagram
- * @param direction
- * @returns
+ * @param panzoom diagram container
+ * @param direction pan direction
  */
 function panDiagram(panzoom: PanzoomObject | null, direction: PanDirection): void {
   if (!panzoom)
@@ -98,10 +98,9 @@ function panDiagram(panzoom: PanzoomObject | null, direction: PanDirection): voi
 
 /**
  *
- * @param diagram
- * @param svgTemp
- * @param callback
- * @returns
+ * @param diagram diagram container
+ * @param svgTemp svg temp dom
+ * @param callback callback after replace
  */
 async function replaceImageWithSvg(diagram: HTMLElement, svgTemp: any, callback: () => void): Promise<void> {
   const imgEle = diagram.querySelector<HTMLImageElement>('img')
@@ -199,8 +198,8 @@ function downloadBlob(blob: Blob, fileName?: string) {
 /**
  * svg diagram to rough diagram
  * @param diagram diagram container
- * @param svgTemp svg temp dom
  * @param btn button control panel
+ * @param svgTemp svg temp dom
  */
 async function svgToRough(diagram: HTMLElement | null, btn: HTMLElement, svgTemp: any): Promise<void> {
   if (!diagram)
@@ -208,12 +207,12 @@ async function svgToRough(diagram: HTMLElement | null, btn: HTMLElement, svgTemp
 
   const currentIdentifier = diagram.getAttribute('data-svg')
   const btnSelectors = btn.querySelectorAll('svg')
-  const loadingIcon = btn.querySelector('.octicon-loading')
-  const checkIcon = btn.querySelector('.octicon-check')
-  const initIcon = btn.querySelector('.octicon-init')
+  const initIcon = btnSelectors[0]
+  const loadingIcon = btnSelectors[1]
+  const checkIcon = btnSelectors[2]
 
-  btnSelectors.forEach((btnSelector) => {
-    btnSelector.classList.toggle('fg-none', !btnSelector.classList.contains('octicon-loading'))
+  btnSelectors.forEach((btnSelector, index) => {
+    btnSelector.classList.toggle('fg-none', index !== 1)
   })
 
   const callback = async () => {
@@ -255,9 +254,9 @@ async function svgToRough(diagram: HTMLElement | null, btn: HTMLElement, svgTemp
 
 /**
  * @param selector
- * [data-controll-panel-container-modal] | [data-controll-panel-container]
+ * [data-control-panel-container-modal] | [data-control-panel-container]
  */
-const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-controll-panel-container]') {
+const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (selector = '[data-control-panel-container]') {
   const containers: NodeListOf<Element> = document.querySelectorAll(selector)
   // inject style css
   injectStyle('diagram-css-unique')
@@ -308,9 +307,9 @@ const markdownItDiagramDom: (selector?: ContainterSelector) => void = function (
         'right': () => panDiagram(panzoom, 'right'),
         'copy': () => copyToClipboard(button),
         'dialog': () => {
-          setupModalHandler(`[${SelectorEnum.MODAL}]`, `<div data-controll-panel-container-modal>${container.innerHTML}</div>`, () => {
+          setupModalHandler(`[${SelectorEnum.MODAL}]`, `<div data-control-panel-container-modal>${container.innerHTML}</div>`, () => {
             diagramModal?._showModal()
-            markdownItDiagramDom('[data-controll-panel-container-modal]')
+            markdownItDiagramDom('[data-control-panel-container-modal]')
           })
         },
         'rough': () => svgToRough(diagram, button, svgTemp),

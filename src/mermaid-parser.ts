@@ -1,6 +1,6 @@
 'use strict'
 
-import { getController } from './render-control'
+import { getController } from './controller'
 import { type MermaidOptions, SelectorEnum } from './types'
 
 const functions = {

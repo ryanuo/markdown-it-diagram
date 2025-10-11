@@ -11,7 +11,7 @@ export enum SelectorEnum {
   MERMAID = 'data-diagram-mermaid',
 }
 
-export type ContainterSelector = '[data-controll-panel-container-modal]' | '[data-controll-panel-container]'
+export type ContainterSelector = '[data-control-panel-container-modal]' | '[data-control-panel-container]'
 export interface PanzoomObject {
   pan: (x: number, y: number, options: { relative: boolean, animate: boolean }) => void
 }

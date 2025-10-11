@@ -4,7 +4,7 @@ import type { LangType, PlantumlOptions } from './types'
 import { SelectorEnum } from './types'
 
 import deflate from './deflate'
-import { getController } from './render-control'
+import { getController } from './controller'
 
 const functions = {
   options: {

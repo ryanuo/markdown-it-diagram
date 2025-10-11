@@ -5,7 +5,7 @@ export default antfu(
   {
     ignores: [
       // eslint ignore globs here
-      'src/deflate.ts',
+      'src/utils/deflate.ts',
     ],
   },
   {

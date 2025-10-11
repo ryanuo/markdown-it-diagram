@@ -1,4 +1,3 @@
-/* eslint-disable curly */
 /* eslint-disable no-empty */
 /* eslint-disable no-unmodified-loop-condition */
 /* eslint-disable unused-imports/no-unused-vars */
@@ -584,8 +583,9 @@ function zip_longest_match(cur_match) {
       || zip_window[matchp + best_len - 1] != scan_end1
       || zip_window[matchp] != zip_window[scanp]
       || zip_window[++matchp] != zip_window[scanp + 1]
-    )
+    ) {
       continue
+    }
 
     /* The check at best_len-1 can be removed because it will be made
      * again later. (This heuristic is not always a win.)
@@ -599,7 +599,7 @@ function zip_longest_match(cur_match) {
     /* We check for insufficient lookahead only every 8th comparison;
      * the 256th check will be made at strstart+258.
      */
-    do {} while (
+    do { } while (
       zip_window[++scanp] == zip_window[++matchp]
       && zip_window[++scanp] == zip_window[++matchp]
       && zip_window[++scanp] == zip_window[++matchp]
@@ -1734,8 +1734,9 @@ function zip_ct_tally(
     if (
       zip_last_dist < Number.parseInt(zip_last_lit / 2)
       && out_length < Number.parseInt(in_length / 2)
-    )
+    ) {
       return true
+    }
   }
   return (
     zip_last_lit == zip_LIT_BUFSIZE - 1 || zip_last_dist == zip_DIST_BUFSIZE

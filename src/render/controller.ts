@@ -1,3 +1,5 @@
+import { compress } from '../utils/compress'
+import { encrypt } from '../utils/crypto'
 import { icons, status_icons } from './icons' // 上面整理好的 icons 对象
 
 const mainControllerKeys = ['zoom-in', 'zoom-out', 'reset', 'up', 'down', 'left', 'right'] as const
@@ -13,7 +15,7 @@ function renderOtherController(code: string) {
   return `<div data-control-panel="details">
     ${otherControllerKeys.map((key) => {
     if (key === 'copy') {
-      return `<button data-clipboard-code="${code}" data-control-btn="copy" aria-label="Copy to clipboard">
+      return `<button data-clipboard-code="${encrypt(compress(code))}" data-control-btn="copy" aria-label="Copy to clipboard">
           ${icons.copy}${status_icons['copy-checked']}
         </button>`
     }
@@ -30,7 +32,7 @@ function renderOtherController(code: string) {
 }
 
 /** 获取完整控制面板 */
-export function getController(code: string, img: string) {
+export function getController(code: string, img: string): string {
   return `
   <div data-control-panel-container>
     ${img}

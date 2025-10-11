@@ -1,6 +1,6 @@
 import type { PluginWithOptions } from 'markdown-it'
-import * as mermaidFunctions from './mermaid-parser'
-import * as platumlFunctions from './plantuml-parser'
+import * as mermaidFunctions from './parser/mermaid-parser'
+import * as platumlFunctions from './parser/plantuml-parser'
 import type { PlantumlOptions } from './types'
 
 const MarkdownItDiagrams: PluginWithOptions<PlantumlOptions> = (md, options = {}) => {

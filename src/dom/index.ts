@@ -1,6 +1,8 @@
 import { Svg2Roughjs } from 'svg2roughjs'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import Panzoom from '@panzoom/panzoom'
+import { decompress } from '../utils/compress'
+import { decrypt } from '../utils/crypto'
 import type { ActionMap, ContainterSelector, PanDirection } from './types'
 import { SelectorEnum } from './types'
 import { DiagarmModal } from './modal'
@@ -56,8 +58,10 @@ async function copyToClipboard(btn: HTMLElement): Promise<void> {
   try {
     const svgEleList = btn.querySelectorAll('svg')
     const text: string = btn.getAttribute('data-clipboard-code') || ''
+    const safeValue = decodeURIComponent(text)
+    const originalCode = decompress(decrypt(safeValue))
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(text)
+      await navigator.clipboard.writeText(originalCode)
       const copyIcon = svgEleList[0]
       const checkIcon = svgEleList[1]
       copyIcon?.classList.add('fg-none')

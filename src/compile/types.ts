@@ -1,5 +1,5 @@
-import * as dom from './dom/types'
-import { SelectorEnum } from './dom/types'
+import * as dom from '../dom/types'
+import { SelectorEnum } from '../dom/types'
 
 export interface BaseOptions {
   /**

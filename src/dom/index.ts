@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Svg2Roughjs } from 'svg2roughjs'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import Panzoom from '@panzoom/panzoom'
@@ -37,6 +38,21 @@ function decompress(str: string): string {
   }
 }
 
+export function logMarkdownItDiagramBanner() {
+  const ascii = `
+        ▌  ▌         ▘▗    ▌▘           
+  ▛▛▌▀▌▛▘▙▘▛▌▛▌▌▌▌▛▌▄▖▌▜▘▄▖▛▌▌▀▌▛▌▛▘▀▌▛▛▌
+  ▌▌▌█▌▌ ▛▖▙▌▙▌▚▚▘▌▌  ▌▐▖  ▙▌▌█▌▙▌▌ █▌▌▌▌
+                                ▄▌       
+`
+
+  console.log(
+    `%c${ascii}%c\n🌐 GitHub: https://github.com/ryanuo/markdown-it-diagram`,
+    'color: #8A2BE2; font-weight:bold;', // ASCII 图案样式
+    'color: #fff; background:#24292e; padding:2px 6px; border-radius:3px; font-weight:bold;', // GitHub 链接样式
+  )
+}
+
 export function injectStyle(styleId: string): void {
   // Check if the style tag with the specified ID already exists
   if (!document.getElementById(styleId)) {
@@ -47,8 +63,7 @@ export function injectStyle(styleId: string): void {
 
     // Append the style element to the document head
     document.head.appendChild(styleElement)
-
-    console.warn(`Style with ID '${styleId}' injected successfully.`)
+    logMarkdownItDiagramBanner()
   }
   else {
     console.warn(`Style with ID '${styleId}' already exists.`)

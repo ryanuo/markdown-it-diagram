@@ -2,7 +2,7 @@ import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
   entries: [
-    'src/index',
+    'src/compile/index',
     {
       builder: 'mkdist',
       input: './src/dom',

@@ -29,7 +29,8 @@ export interface PlantumlOptions extends BaseOptions {
    */
   dot?: {
     server?: string
-    imageFormat?: 'png' | 'svg' | 'txt'
+    // no support svg: https://github.com/plantuml/plantuml/issues/2495#issuecomment-4405454899
+    imageFormat?: 'png' | 'txt'
   }
   /**
    * plantuml options
